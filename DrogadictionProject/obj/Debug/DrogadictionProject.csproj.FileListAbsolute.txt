@@ -1,0 +1,16 @@
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\DrogadictionProject.exe.config
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\DrogadictionProject.exe
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\DrogadictionProject.pdb
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\Newtonsoft.Json.dll
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\Newtonsoft.Json.xml
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.csprojResolveAssemblyReference.cache
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.Form1.resources
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.Properties.Resources.resources
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.csproj.GenerateResource.Cache
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.exe
+C:\Users\USER\Documents\DrogadictionProject\DrogadictionProject\DrogadictionProject\obj\Debug\DrogadictionProject.pdb
+C:\Users\USER\Documents\DrogadictionProject\DrugsProject\DrogadictionProject\bin\Debug\DrogadictionProject.exe.config
+C:\Users\USER\Documents\DrogadictionProject\DrugsProject\DrogadictionProject\obj\Debug\DrogadictionProject.exe
+C:\Users\USER\Documents\DrogadictionProject\DrugsProject\DrogadictionProject\obj\Debug\DrogadictionProject.pdb
