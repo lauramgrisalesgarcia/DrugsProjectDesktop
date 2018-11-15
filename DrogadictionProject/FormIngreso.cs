@@ -13,13 +13,13 @@ using Newtonsoft.Json;
 
 namespace DrogadictionProject
 {
-    public partial class Form1 : Form
+    public partial class FormIngreso : Form
     {
-        public Form1()
+        public FormIngreso()
         {
             InitializeComponent();
         }
-        string URL = "localhost/Drogadiccion/api/Users";
+        string URL = "http://52.168.52.154/webapi/api/Users/Post";
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -46,7 +46,27 @@ namespace DrogadictionProject
             {
                 var serializedUser = JsonConvert.SerializeObject(login);
                 var content = new StringContent(serializedUser, Encoding.UTF8, "application/json");
-                var result = await client.PostAsync(URL, content);
+                HttpResponseMessage result = await client.PostAsync(URL, content);
+                if (result.IsSuccessStatusCode)
+                {
+                    if (result.Content.Headers.ContentLength == 4)
+                    {
+                        MessageBox.Show("Bienvenido");
+                        FormEncuesta frmEncuesta = new FormEncuesta();                        
+                        frmEncuesta.StartPosition = FormStartPosition.CenterScreen;
+                        frmEncuesta.Show();
+                        this.Dispose(false);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario o contraseña incorrectos");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error de conexión");
+                }
+                Console.WriteLine(result.Content.Headers.ContentLength);   
             }
         }
     }
