@@ -44,6 +44,7 @@ namespace DrogadictionProject
                     {
                         lblPregunta.Text = lista.Result[cont].descripcion;
                         GetAnswer(lista.Result[cont].preguntaId);
+                        Console.WriteLine(FormIngreso.userId);
                     }
                     else
                     {
@@ -88,35 +89,24 @@ namespace DrogadictionProject
                 }
             }
         }
-        private async void Answer(int estudiante, int respuesta)
+        
+        private async void PostAnswer(int estudiante, int respuesta)
         {
-            //Answer answer = new Answer();
-            //answer.estudianteId = estudiante;
-            //answer.fecha = DateTime.Now;
-            //answer.respuestaId = respuesta;
+            using (var client = new HttpClient())
+            {
+                StudentAnswer studentanswer = new StudentAnswer();
+                studentanswer.estudianteId = estudiante;
+                studentanswer.fecha = DateTime.Now;
+                studentanswer.respuestaId = respuesta;
 
-            //using (var client = new HttpClient())
-            //{
-            //    var serializedUser = JsonConvert.SerializeObject(answer);
-            //    var content = new StringContent(serializedUser, Encoding.UTF8, "application/json");
-            //    HttpResponseMessage result = await client.PostAsync(URL, content);
-            //    if (result.IsSuccessStatusCode)
-            //    {
-            //        //if ()
-            //        //{
-                        
-            //        //}
-            //        //else
-            //        //{
-            //        //    MessageBox.Show("No se ha almacenado la respuesta");
-            //        //}
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Error de conexión");
-            //    }
-            //    Console.WriteLine(result.Content.Headers.ContentLength);
-            //}
+                var serializedUser = JsonConvert.SerializeObject(studentanswer);
+                var content = new StringContent(serializedUser, Encoding.UTF8, "application/json");
+                HttpResponseMessage result = await client.PostAsync(URL, content);
+                if (!(result.IsSuccessStatusCode))
+                {
+                    MessageBox.Show("Error de conexión");
+                }
+            }
         }
 
         public void Clean()
@@ -131,7 +121,10 @@ namespace DrogadictionProject
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            cont++;
+            RadioButton option = groupBox1.Controls.OfType<RadioButton>().Where(pre => pre.Checked).SingleOrDefault<RadioButton>();
+            int selected = Int16.Parse(option.Name);
+            PostAnswer(FormIngreso.userId, selected);
+            cont++;            
             GetQuestion();
         }
     }

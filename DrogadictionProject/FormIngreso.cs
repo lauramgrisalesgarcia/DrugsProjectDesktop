@@ -11,14 +11,17 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
+
 namespace DrogadictionProject
 {
+    
     public partial class FormIngreso : Form
     {
         public FormIngreso()
         {
             InitializeComponent();
         }
+        public static int userId { get; set; } = 3;
         string URL = "http://52.168.52.154/webapi/api/Users/Post";
         private void label1_Click(object sender, EventArgs e)
         {
@@ -67,6 +70,23 @@ namespace DrogadictionProject
                     MessageBox.Show("Error de conexión");
                 }
                 Console.WriteLine(result.Content.Headers.ContentLength);   
+            }
+        }
+
+        public async void GetUser()
+        {
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(URL + "/GetUser");
+                if (response.IsSuccessStatusCode)
+                {
+                    var lista = response.Content.ReadAsAsync<IList<User>>();
+                    userId = lista.Result[0].userId;
+                }
+                else
+                {
+                    MessageBox.Show("No se ha podido traer información");
+                }
             }
         }
     }
