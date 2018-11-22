@@ -28,3 +28,4 @@ C:\Users\USER\Documents\DrogadictionProject\DrugsProjectDesktop\DrogadictionProj
 C:\Users\USER\Documents\DrogadictionProject\DrugsProjectDesktop\DrogadictionProject\obj\Debug\DrogadictionProject.csproj.GenerateResource.Cache
 C:\Users\USER\Documents\DrogadictionProject\DrugsProjectDesktop\DrogadictionProject\obj\Debug\DrogadictionProject.FormIngreso.resources
 C:\Users\USER\Documents\DrogadictionProject\DrugsProjectDesktop\DrogadictionProject\obj\Debug\DrogadictionProject.FormEncuesta.resources
+C:\Users\USER\Documents\DrogadictionProject\DrugsProjectDesktop\DrogadictionProject\obj\Debug\DrogadictionProject.FormMenu.resources

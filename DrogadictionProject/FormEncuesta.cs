@@ -17,10 +17,13 @@ namespace DrogadictionProject
         public FormEncuesta()
         {
             InitializeComponent();
-            GetQuestion();            
+            ControlBox = false;
+            GetQuestion();
+            lblStudentName.Text = FormIngreso.userName;
         }
-        string URL = "http://52.168.52.154/webapi/api/Preguntas/";
+        string URL = "http://52.168.52.154/webapi/api/Preguntas";
         int cont = 0;
+        int n = 18, p = 0;
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -35,21 +38,22 @@ namespace DrogadictionProject
         {
             using (var client = new HttpClient())
             {
-                List<Questions> listpre = new List<Questions>();
                 HttpResponseMessage response = await client.GetAsync(URL + "/GetPregunta");
                 if (response.IsSuccessStatusCode)
                 {
                     var lista = response.Content.ReadAsAsync<IList<Questions>>();
-                    if (lista.Result.Count-1 > cont)
+                    if (lista.Result.Count-1 >= cont)
                     {
                         lblPregunta.Text = lista.Result[cont].descripcion;
                         GetAnswer(lista.Result[cont].preguntaId);
-                        Console.WriteLine(FormIngreso.userId);
                     }
                     else
                     {
                         MessageBox.Show("Gracias por responder las preguntas");
-                        this.Close();
+                        FormMenu frmMenu = new FormMenu();
+                        frmMenu.StartPosition = FormStartPosition.CenterScreen;
+                        frmMenu.Show();
+                        this.Dispose(false);
                     }
                 }
                 else
@@ -60,26 +64,26 @@ namespace DrogadictionProject
         }
 
         public async void GetAnswer(int preguntaId)
-        {
-            var n = 20;
+        {                       
             using (var client = new HttpClient())
             {
-                List<Answer> listpre = new List<Answer>();
                 HttpResponseMessage response = await client.GetAsync(URL + "/GetRespuesta");
                 if (response.IsSuccessStatusCode)
                 {
                     var lista = response.Content.ReadAsAsync<IList<Answer>>();
-                    //for (int i = 0; i < lista.Result.Count - 1; i++)
-                    for (int i = 0; i < 2; i++, n+=30)
+                    p = 0;
+                    for (int i = 0; i < lista.Result.Count - 1; i++)
                     {
-                        if (lista.Result[i].preguntaId == preguntaId)
+                        if (lista.Result[i].IdPregunta == preguntaId)
                         {
                             RadioButton radio = new RadioButton();
-                            radio.Name = lista.Result[i].respuestaId.ToString();
-                            radio.Text = lista.Result[i].descripcion;
+                            radio.Name = lista.Result[i].IdRespuesta.ToString();
+                            radio.Text = lista.Result[i].Descripcion;
                             radio.Left = 5;
                             radio.Top = n;
                             groupBox1.Controls.Add(radio);
+                            n += 30;
+                            p++;
                         }
                     }
                 }
@@ -101,7 +105,7 @@ namespace DrogadictionProject
 
                 var serializedUser = JsonConvert.SerializeObject(studentanswer);
                 var content = new StringContent(serializedUser, Encoding.UTF8, "application/json");
-                HttpResponseMessage result = await client.PostAsync(URL, content);
+                HttpResponseMessage result = await client.PostAsync(URL+"/PostRespuesta", content);
                 if (!(result.IsSuccessStatusCode))
                 {
                     MessageBox.Show("Error de conexión");
@@ -111,7 +115,11 @@ namespace DrogadictionProject
 
         public void Clean()
         {
-            
+            foreach (RadioButton group in groupBox1.Controls.OfType<RadioButton>().Where((controlname) => controlname.Name.Contains("")))
+            {
+                groupBox1.Controls.Remove(group);
+            }
+            n = 18;
         }
 
         private void lblPregunta_Click(object sender, EventArgs e)
@@ -119,13 +127,39 @@ namespace DrogadictionProject
 
         }
 
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            FormMenu frmMenu = new FormMenu();
+            frmMenu.StartPosition = FormStartPosition.CenterScreen;
+            frmMenu.Show();
+            this.Dispose(false);
+        }
+
         private void btnNext_Click(object sender, EventArgs e)
         {
             RadioButton option = groupBox1.Controls.OfType<RadioButton>().Where(pre => pre.Checked).SingleOrDefault<RadioButton>();
-            int selected = Int16.Parse(option.Name);
-            PostAnswer(FormIngreso.userId, selected);
-            cont++;            
-            GetQuestion();
+            if (option == null)
+            {
+                MessageBox.Show("Debe seleccionar una respuesta antes de continuar");
+            }
+            else
+            {
+                int selected = Int16.Parse(option.Name);
+                PostAnswer(FormIngreso.userId, selected);
+                cont++;
+                for (int i = 0; i <= p; i++)
+                {
+                    Clean();
+                }                
+                GetQuestion();
+                btnBack.Dispose();
+            }
+                        
         }
     }
 }

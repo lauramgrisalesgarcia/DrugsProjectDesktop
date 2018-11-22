@@ -21,8 +21,11 @@ namespace DrogadictionProject
         {
             InitializeComponent();
         }
-        public static int userId { get; set; } = 3;
-        string URL = "http://52.168.52.154/webapi/api/Users/Post";
+        public static int userId { get; set; }
+        public static string usuario { get; set; }
+        public static string userName { get; set; }
+
+        string URL = "http://52.168.52.154/webapi/api/";
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -42,6 +45,7 @@ namespace DrogadictionProject
         private async void Login(string user, string pass)
         {
             Login login = new Login();
+            usuario = user;
             login.Name = user;
             login.Password = pass;
 
@@ -49,16 +53,12 @@ namespace DrogadictionProject
             {
                 var serializedUser = JsonConvert.SerializeObject(login);
                 var content = new StringContent(serializedUser, Encoding.UTF8, "application/json");
-                HttpResponseMessage result = await client.PostAsync(URL, content);
+                HttpResponseMessage result = await client.PostAsync(URL+ "Users/Post", content);
                 if (result.IsSuccessStatusCode)
                 {
                     if (result.Content.Headers.ContentLength == 4)
-                    {
-                        MessageBox.Show("Bienvenido");
-                        FormEncuesta frmEncuesta = new FormEncuesta();                        
-                        frmEncuesta.StartPosition = FormStartPosition.CenterScreen;
-                        frmEncuesta.Show();
-                        this.Dispose(false);
+                    {                        
+                        GetUser();                        
                     }
                     else
                     {
@@ -69,7 +69,6 @@ namespace DrogadictionProject
                 {
                     MessageBox.Show("Error de conexión");
                 }
-                Console.WriteLine(result.Content.Headers.ContentLength);   
             }
         }
 
@@ -77,11 +76,17 @@ namespace DrogadictionProject
         {
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(URL + "/GetUser");
+                HttpResponseMessage response = await client.GetAsync(URL + "Usuarios/GetUsuario?usuario=" + usuario);
                 if (response.IsSuccessStatusCode)
                 {
-                    var lista = response.Content.ReadAsAsync<IList<User>>();
-                    userId = lista.Result[0].userId;
+                    string lista = response.Content.ReadAsStringAsync().Result.Replace("\\","").Trim(new char[1] { '"' });                    
+                    var usuario = JsonConvert.DeserializeObject<Student>(lista);
+                    userId = usuario.Id;
+                    userName = usuario.Nombre;
+                    FormMenu frmMenu = new FormMenu();
+                    frmMenu.StartPosition = FormStartPosition.CenterScreen;
+                    frmMenu.Show();
+                    this.Dispose(false);
                 }
                 else
                 {
